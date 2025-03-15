@@ -56,7 +56,7 @@ fn main() {
                 Ok(path) => println!("{}", path.display()),
                 Err(e) => println!("pwd, error: {}", e),
             },
-            "ls" => match fs::read_dir(".") {
+            "ls" | "dir" => match fs::read_dir(".") {
                 Ok(entries) => {
                     for entry in entries {
                         if let Ok(entry) = entry {
@@ -142,11 +142,25 @@ fn main() {
                     }
                 }
             }
+            "write" => {
+                if args.len() < 2 {
+                    println!(
+                        "write: please provide a file name and text(example: write file.txt Hello"
+                    );
+                } else {
+                    let path = args[0];
+                    let content = args[1..].join(" ");
+                    match fs::write(path, content) {
+                        Ok(_) => println!("Wrote to file {}", path),
+                        Err(e) => println!("write: error: {}", e),
+                    }
+                }
+            }
             "whoami" => match env::var("USER").or_else(|_| env::var("USERNAME")) {
                 Ok(user) => println!("{}", user),
                 Err(e) => println!("Whoami: error: {}", e),
             },
-            "clear" => {
+            "clear" | "cls" => {
                 println!("\x1B[2J\x1B[H");
                 io::stdout().flush().unwrap();
             }
@@ -165,15 +179,16 @@ fn main() {
                 println!(" echo <text>          - Print text to the terminal");
                 println!(" pwd                  - Print the current working directory ");
                 println!(" exit                 - Exit the shell");
-                println!(" ls                   - List files in the current directory");
+                println!(" ls / dir             - List files in the current directory");
                 println!(" cat <file>           - Display the contents of a file");
                 println!(" cp <src> <dest>      - Copy a file from source to destination");
                 println!(" mv <src> <dest>      - Move or rename a file");
                 println!(" rm <path>            - Remove a file or directory ");
                 println!(" mkdir <dir>          - Create a new directory");
                 println!(" touch <file>         - Create an empty file");
+                println!(" write <file> <text>  - Write text to a file");
                 println!(" whoami               - Print the current username");
-                println!(" clear                - Clear the terminal screen");
+                println!(" clear / cls          - Clear the terminal screen");
                 println!(" history              - Show command history");
                 println!(" help                 - Show this help message");
             }
