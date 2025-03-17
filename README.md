@@ -12,3 +12,5 @@ Features
 - Exit the shell(exit)
 - Windows executable(target/release/custom_shell.exe)
 - Custom Windows application icon(icon.ico)
+- Sysinfo command to get a system's information
+- Added colors to different commands/errors/messages
