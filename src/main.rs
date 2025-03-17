@@ -1,3 +1,4 @@
+use colored::Colorize;
 use std::env;
 use std::fs;
 use std::io::{self, Write};
@@ -174,23 +175,28 @@ fn main() {
                 }
             }
             "help" => {
-                println!("Available commands: ");
-                println!(" cd <dir>             - Change the current directory");
-                println!(" echo <text>          - Print text to the terminal");
-                println!(" pwd                  - Print the current working directory ");
-                println!(" exit                 - Exit the shell");
-                println!(" ls / dir             - List files in the current directory");
-                println!(" cat <file>           - Display the contents of a file");
-                println!(" cp <src> <dest>      - Copy a file from source to destination");
-                println!(" mv <src> <dest>      - Move or rename a file");
-                println!(" rm <path>            - Remove a file or directory ");
-                println!(" mkdir <dir>          - Create a new directory");
-                println!(" touch <file>         - Create an empty file");
-                println!(" write <file> <text>  - Write text to a file");
-                println!(" whoami               - Print the current username");
-                println!(" clear / cls          - Clear the terminal screen");
-                println!(" history              - Show command history");
-                println!(" help                 - Show this help message");
+                println!(
+                    "Available commands:\n\
+                    cd <dir>             - Change the current directory\n\
+                    echo <text>          - Print text to the terminal\n\
+                    pwd                  - Print the current working directory\n\
+                    ls / dir             - List files in the current directory\n\
+                    cat <file>           - Display the contents of a file\n\
+                    cp <src> <dest>      - Copy a file from source to destination\n\
+                    mv <src> <dest>      - Move or rename a file\n\
+                    rm <path>            - Remove a file or directory\n\
+                    mkdir <dir>          - Create a new directory\n\
+                    touch <file>         - Create an empty file\n\
+                    write <file> <text>  - Write text to a file\n\
+                    whoami               - Print the current username\n\
+                    clear / cls          - Clear the terminal screen\n\
+                    {}                   - Show command history\n\
+                    {}                   - Show this help message\n\
+                    {}                   - Exit the shell",
+                    "history".yellow().underline(),
+                    "help".yellow().underline(),
+                    "exit".red().bold()
+                );
             }
             _ => {
                 println!("Unknown command: '{}' ", command);
