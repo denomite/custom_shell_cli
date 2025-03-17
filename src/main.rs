@@ -4,6 +4,7 @@ use std::fs;
 use std::io::{self, Write};
 use std::path::Path;
 use std::process;
+use sysinfo::{RefreshKind, System};
 
 fn main() {
     println!(" #################### Custom Shell #################### ");
@@ -165,6 +166,39 @@ fn main() {
                 println!("\x1B[2J\x1B[H");
                 io::stdout().flush().unwrap();
             }
+            "sysninfo" => {
+                let mut sys = System::new_all(); // Initialize sysinfo
+
+                let command = "sysinfo"; // This would come from input logic
+
+                match command {
+                    "sysinfo" => {
+                        // Refresh system information
+                        sys.refresh_specifics(RefreshKind::everything());
+
+                        // Print system information
+                        println!("{}", "System Information: ".cyan().bold());
+
+                        // Os Info
+                        println!("OS: {}", System::name().unwrap_or("Unknown".to_string()));
+                        println!(
+                            "Host: {}",
+                            System::host_name().unwrap_or("Unknown".to_string())
+                        );
+                        // CPU Info
+                        let cpu_count = sys.cpus().len();
+                        let cpu_usage = sys.global_cpu_usage();
+                        println!(
+                            "CPUs: {} cores ({}% usage)",
+                            cpu_count.to_string().green(),
+                            format!("{:.1}", cpu_usage).yellow()
+                        );
+                    }
+                    _ => {
+                        println!("{}: '{}'", "Unknown Command".red(), command);
+                    }
+                }
+            }
             "history" => {
                 if history.is_empty() {
                     println!("No command history yet.");
@@ -176,23 +210,27 @@ fn main() {
             }
             "help" => {
                 println!(
-                    "Available commands:\n\
-                    cd <dir>             - Change the current directory\n\
-                    echo <text>          - Print text to the terminal\n\
-                    pwd                  - Print the current working directory\n\
-                    ls / dir             - List files in the current directory\n\
-                    cat <file>           - Display the contents of a file\n\
-                    cp <src> <dest>      - Copy a file from source to destination\n\
-                    mv <src> <dest>      - Move or rename a file\n\
-                    rm <path>            - Remove a file or directory\n\
-                    mkdir <dir>          - Create a new directory\n\
-                    touch <file>         - Create an empty file\n\
-                    write <file> <text>  - Write text to a file\n\
-                    whoami               - Print the current username\n\
-                    clear / cls          - Clear the terminal screen\n\
-                    {}                   - Show command history\n\
-                    {}                   - Show this help message\n\
-                    {}                   - Exit the shell",
+                    "
+                    Available commands:
+
+                    cd <dir>             - Change the current directory
+                    echo <text>          - Print text to the terminal
+                    pwd                  - Print the current working directory
+                    ls / dir             - List files in the current directory
+                    cat <file>           - Display the contents of a file
+                    cp <src> <dest>      - Copy a file from source to destination
+                    mv <src> <dest>      - Move or rename a file
+                    rm <path>            - Remove a file or directory
+                    mkdir <dir>          - Create a new directory
+                    touch <file>         - Create an empty file
+                    write <file> <text>  - Write text to a file
+                    whoami               - Print the current username
+                    clear / cls          - Clear the terminal screen
+                    {} - Show system information
+                    {} - Show command history
+                    {} - Show this help message
+                    {}  - Exit the shell",
+                    "sysninfo".cyan(),
                     "history".yellow().underline(),
                     "help".yellow().underline(),
                     "exit".red().bold()
