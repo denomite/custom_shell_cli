@@ -1,15 +1,14 @@
+use chrono::{DateTime, Local};
 use colored::Colorize;
 use std::env;
 use std::fs;
 use std::io::{self, Write};
 use std::path::Path;
 use std::process;
-use sysinfo::Disks;
-use sysinfo::{RefreshKind, System};
+use sysinfo::{Disks, RefreshKind, System};
 
 fn main() {
-    println!(" #################### Custom Shell #################### ");
-    println!(" --- To see all available commands, type: help  ---");
+    println!("Simple CLI shell.  To see all available commands: help ");
 
     // Store command history
     let mut history: Vec<String> = Vec::new();
@@ -238,28 +237,54 @@ fn main() {
                     }
                 }
             }
+            "date" => {
+                // Get current local time
+                let now: DateTime<Local> = Local::now();
+
+                // Format and print
+                println!("{}", "Current Date and Time".cyan().bold());
+                println!("{}", now.format("%Y-%m-%d %H:%M:%S").to_string().green());
+                println!("Weekday: {}", now.format("%A").to_string().yellow());
+                // Standard ISO format
+                println!("ISO: {}", now.to_rfc3339().blue());
+            }
             "help" => {
                 println!(
-                    "
-                    Available commands:
-
-                    cd <dir>             - Change the current directory
-                    echo <text>          - Print text to the terminal
-                    pwd                  - Print the current working directory
-                    ls / dir             - List files in the current directory
-                    cat <file>           - Display the contents of a file
-                    cp <src> <dest>      - Copy a file from source to destination
-                    mv <src> <dest>      - Move or rename a file
-                    rm <path>            - Remove a file or directory
-                    mkdir <dir>          - Create a new directory
-                    touch <file>         - Create an empty file
-                    write <file> <text>  - Write text to a file
-                    whoami               - Print the current username
-                    clear / cls          - Clear the terminal screen
-                    {} - Show system information
-                    {} - Show command history
-                    {} - Show this help message
-                    {}  - Exit the shell",
+                    "Available commands:\n\
+                    {} <dir>             - Change the current directory\n\
+                    {} <text>          - Print text to the terminal\n\
+                    {}                  - Print the current working directory\n\
+                    {} / {}             - List files in the current directory\n\
+                    {} <file>           - Display the contents of a file\n\
+                    {} <src> <dest>      - Copy a file from source to destination\n\
+                    {} <src> <dest>      - Move or rename a file\n\
+                    {} <path>            - Remove a file or directory\n\
+                    {} <dir>          - Create a new directory\n\
+                    {} <file>         - Create an empty file\n\
+                    {} <file> <text>  - Write text to a file\n\
+                    {}               - Print the current username\n\
+                    {} / {}          - Clear the terminal screen\n\
+                    {}                 - Show current date and time\n\
+                    {}             - Show system information\n\
+                    {}              - Show command history\n\
+                    {}                 - Show this help message\n\
+                    {}                 - Exit the shell",
+                    "cd".green(),
+                    "echo".green(),
+                    "pwd".green(),
+                    "ls".green(),
+                    "dir".green(),
+                    "cat".green(),
+                    "cp".green(),
+                    "mv".green(),
+                    "rm".green(),
+                    "mkdir".green(),
+                    "touch".green(),
+                    "write".green(),
+                    "whoami".green(),
+                    "clear".green(),
+                    "cls".green(),
+                    "date".cyan(),
                     "sysninfo".cyan(),
                     "history".yellow().underline(),
                     "help".yellow().underline(),
