@@ -1,3 +1,4 @@
+pub mod assist;
 pub mod cat;
 pub mod cd;
 pub mod clear;
@@ -5,7 +6,6 @@ pub mod cp;
 pub mod date;
 pub mod echo;
 pub mod exit;
-pub mod help;
 pub mod history;
 pub mod ls;
 pub mod mkdir;

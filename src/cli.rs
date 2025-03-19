@@ -1,15 +1,13 @@
 use clap::{Parser, Subcommand};
 
 #[derive(Parser)]
-// Custom help
-#[command(about = "Simple CLI shell", version = "1.0", disable_help_flag = true)]
+#[command(about = "Simple CLI shell", version = "1.0")]
 pub struct Cli {
     #[command(subcommand)]
     pub command: Option<Commands>,
 }
 
 #[derive(Subcommand)]
-#[command(disable_help_flag = true)]
 pub enum Commands {
     Echo {
         text: Vec<String>,
@@ -55,6 +53,7 @@ pub enum Commands {
     Sysinfo,
     History,
     Date,
-    Help,
+    #[command(name = "assist")]
+    Assist,
     Exit,
 }

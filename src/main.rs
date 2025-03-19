@@ -6,7 +6,7 @@ mod cli;
 mod commands;
 
 fn main() {
-    println!("Simple CLI shell.  All available commands: help ");
+    println!("All available commands: (cargo/clap): help, (custom/help): assist ");
 
     // Store command history
     let mut history: Vec<String> = Vec::new();
@@ -27,11 +27,9 @@ fn main() {
 
         //Add to history before processing
         history.push(input.to_string());
+        let mut args: Vec<&str> = vec!["myshell"];
+        args.extend(input.split_whitespace());
 
-        // Split input into arguments for clap
-        let args: Vec<&str> = input.split_whitespace().collect();
-
-        // Prase the input with clap
         match Cli::try_parse_from(&args) {
             Ok(cli) => match cli.command {
                 Some(Commands::Echo { text }) => commands::echo::execute(&text),
@@ -52,11 +50,14 @@ fn main() {
                 Some(Commands::Sysinfo) => commands::sysninfo::execute(&[]),
                 Some(Commands::History) => commands::history::execute(&[], &history),
                 Some(Commands::Date) => commands::date::execute(&[]),
-                Some(Commands::Help) => commands::help::execute(&[]),
+                Some(Commands::Assist) => commands::assist::execute(&[]),
                 Some(Commands::Exit) => commands::exit::execute(&[]),
-                None => println!("Unknown command: '{}'", args[0]),
+                None => println!("Unknown command: '{}'", args[1]),
             },
-            Err(e) => println!("{}", e),
+            Err(e) => {
+                e.print().unwrap();
+                continue;
+            }
         }
     }
 }
