@@ -18,3 +18,4 @@ Features
 -   Added colors to different commands/errors/messages
 -   Date command added to show Time/Date/ISO format
 -   Code separated into files to keep organized and maintainable.
+-   Added clap crate for command-line parser
