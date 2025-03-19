@@ -17,3 +17,4 @@ Features
 -   Sysinfo command to get a system's information
 -   Added colors to different commands/errors/messages
 -   Date command added to show Time/Date/ISO format
+-   Code separated into files to keep organized and maintainable.
