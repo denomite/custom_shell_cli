@@ -1,8 +1,9 @@
 use std::io::{self, Write};
+mod cli;
 mod commands;
 
 fn main() {
-    println!("Simple CLI shell.  To see all available commands: help ");
+    println!("Simple CLI shell.  All available commands: help ");
 
     // Store command history
     let mut history: Vec<String> = Vec::new();
@@ -24,10 +25,11 @@ fn main() {
         //Add to history before processing
         history.push(input.to_string());
 
-        let parts: Vec<&str> = input.split_whitespace().collect();
-        let command = parts[0];
+        // Split input into arguments for clap
+        let args: Vec<&str> = input.split_whitespace().collect();
 
-        match command {
+        // Prase the input with clap
+        match Cli::try_parse_from(&args) {
             "echo" => commands::echo::execute(&parts[1..]),
             "cd" => commands::cd::execute(&parts[1..]),
             "pwd" => commands::pwd::execute(&parts[1..]),

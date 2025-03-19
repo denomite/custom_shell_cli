@@ -1,4 +1,5 @@
 use std::fs;
+
 #[allow(dead_code)]
 pub fn execute(args: &[&str]) {
     if args.is_empty() {
