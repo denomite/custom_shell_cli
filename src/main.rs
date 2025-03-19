@@ -1,4 +1,7 @@
+use crate::cli::{Cli, Commands};
+use clap::Parser;
 use std::io::{self, Write};
+
 mod cli;
 mod commands;
 
@@ -30,27 +33,30 @@ fn main() {
 
         // Prase the input with clap
         match Cli::try_parse_from(&args) {
-            "echo" => commands::echo::execute(&parts[1..]),
-            "cd" => commands::cd::execute(&parts[1..]),
-            "pwd" => commands::pwd::execute(&parts[1..]),
-            "ls" | "dir" => commands::ls::execute(&parts[1..]),
-            "cat" => commands::ls::execute(&parts[1..]),
-            "cp" => commands::cp::execute(&parts[1..]),
-            "mv" => commands::mv::execute(&parts[1..]),
-            "rm" => commands::rm::execute(&parts[1..]),
-            "mkdir" => commands::mkdir::execute(&parts[1..]),
-            "touch" => commands::touch::execute(&parts[1..]),
-            "write" => commands::write::execute(&parts[1..]),
-            "whoami" => commands::write::execute(&parts[1..]),
-            "clear" | "cls" => commands::clear::execute(&parts[1..]),
-            "sysninfo" => commands::sysninfo::execute(&parts[1..]),
-            "history" => commands::history::execute(&parts[1..], &history),
-            "date" => commands::date::execute(&parts[1..]),
-            "help" => commands::help::execute(&parts[1..]),
-            "exit" => break,
-            _ => {
-                println!("Unknown command: '{}' ", command);
-            }
+            Ok(cli) => match cli.command {
+                Some(Commands::Echo { text }) => commands::echo::execute(&text),
+                Some(Commands::Cd { dir }) => commands::cd::execute(&[&dir]),
+                Some(Commands::Pwd) => commands::pwd::execute(&[]),
+                Some(Commands::Ls) => commands::ls::execute(&[]),
+                Some(Commands::Dir) => commands::ls::execute(&[]),
+                Some(Commands::Cat { file }) => commands::cat::execute(&[&file]),
+                Some(Commands::Cp { src, dest }) => commands::cp::execute(&[&src, &dest]),
+                Some(Commands::Mv { src, dest }) => commands::mv::execute(&[&src, &dest]),
+                Some(Commands::Rm { path }) => commands::rm::execute(&[&path]),
+                Some(Commands::Mkdir { dir }) => commands::mkdir::execute(&[&dir]),
+                Some(Commands::Touch { file }) => commands::touch::execute(&[&file]),
+                Some(Commands::Write { file, text }) => commands::write::execute(&[&file, &text]),
+                Some(Commands::Whoami) => commands::whoami::execute(&[]),
+                Some(Commands::Clear) => commands::clear::execute(&[]),
+                Some(Commands::Cls) => commands::clear::execute(&[]),
+                Some(Commands::Sysinfo) => commands::sysninfo::execute(&[]),
+                Some(Commands::History) => commands::history::execute(&[], &history),
+                Some(Commands::Date) => commands::date::execute(&[]),
+                Some(Commands::Help) => commands::help::execute(&[]),
+                Some(Commands::Exit) => commands::exit::execute(&[]),
+                None => println!("Unknown command: '{}'", args[0]),
+            },
+            Err(e) => println!("{}", e),
         }
     }
 }
