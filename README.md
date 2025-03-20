@@ -28,13 +28,13 @@ A lightweight, custom shell command-line interface (CLI) build with Rust.
 ### Usage
 
 -   Start the shell and type commands:
-    > dir
-    > echo Hellow, world!
-    > cd my_folder
-    > help
-    > assist
-    > sysinfo
-    > exit
+    > > dir
+    > > echo Hellow, world!
+    > > cd my_folder
+    > > help
+    > > assist
+    > > sysinfo
+    > > exit
 
 ## Future improvements
 
