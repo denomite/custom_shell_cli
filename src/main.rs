@@ -6,7 +6,7 @@ mod cli;
 mod commands;
 
 fn main() {
-    println!("All available commands: (cargo/clap): help, (custom/help): assist ");
+    println!("Commands: (cargo/clap): help, (custom/help): assist ");
 
     // Store command history
     let mut history: Vec<String> = Vec::new();
